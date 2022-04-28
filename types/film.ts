@@ -1,13 +1,16 @@
+import { Key } from "react";
+
+
 export interface Film  {
-    id?: String;
+    id?: Key ;
     title?: String;
     director?: String;
     description?: String;
     release_date?: String;
 }
 
-export interface FilmPrpos {
-    props: {
+export interface FilmProps {
+    data: {
         films: Film[]
     }
 }

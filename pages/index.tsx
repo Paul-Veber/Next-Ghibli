@@ -1,12 +1,19 @@
 import { gql } from '@apollo/client'
-import type { GetStaticProps, NextPage } from 'next'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { Film, FilmProps } from '../types/film'
 import client from '../utils/client'
 
-const Home: NextPage = ({ films }) => {
+ interface Props {
+   films: Film[]
+ } 
+
+const Home: NextPage<Props> = (props) => {
+
+  const { films } = props
+
   return (
     <div className={styles.container}>
       <Head>
@@ -25,11 +32,12 @@ const Home: NextPage = ({ films }) => {
         </p>
 
         <div className={styles.grid}>
-{/*           <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a> */}
-
+          {films.map((film: Film) => 
+           <a key={film.id} href="https://nextjs.org/docs" className={styles.card}>
+            <h2>{film.title} &rarr;</h2>
+            <p>{film.description}</p>
+          </a> 
+          )}
         </div>
       </main>
 
@@ -49,13 +57,14 @@ const Home: NextPage = ({ films }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps<FilmProps> = async () => {
-    const { data } = await client.query({
+export async function getStaticProps() {
+    const { data }:FilmProps = await client.query({
       query: gql`
         query GetFilms {
           films {
             id
             title
+            description
           }
         }
       `,
