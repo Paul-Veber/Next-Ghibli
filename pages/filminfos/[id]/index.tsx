@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
+import { GetStaticProps, NextPage } from "next";
+import { ParsedUrlQuery } from "querystring";
 import { Film, FilmProps, FilmRes, People } from "../../../types/film";
 import client from "../../../utils/client";
 
@@ -24,12 +24,18 @@ const FilmInfos: NextPage<FilmProps> = (props) => {
     )
 }
 
-export const getStaticProps = async ({ params }) => {
+interface IdParams extends ParsedUrlQuery {
+    id: string
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+
+    const { id } = context.params as IdParams
 
     const { data }: FilmRes = await client.query({
         query: gql`
             query GetFilm {
-                film(id:"${params.id}") {
+                film(id:"${id}") {
                     id
                     title
                     description
