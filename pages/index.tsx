@@ -3,14 +3,11 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { Film, FilmProps } from '../types/film'
+import { Film, FilmsProps, FilmsRes } from '../types/film'
 import client from '../utils/client'
+import Link from 'next/link'
 
- interface Props {
-   films: Film[]
- } 
-
-const Home: NextPage<Props> = (props) => {
+const Home: NextPage<FilmsProps> = (props) => {
 
   const { films } = props
 
@@ -32,11 +29,15 @@ const Home: NextPage<Props> = (props) => {
         </p>
 
         <div className={styles.grid}>
-          {films.map((film: Film) => 
-           <a key={film.id} href="https://nextjs.org/docs" className={styles.card}>
-            <h2>{film.title} &rarr;</h2>
-            <p>{film.description}</p>
-          </a> 
+          {films.map((film: Film) =>
+            <div key={film.id}>
+              <Link href={{ pathname: '/filminfos/[id]', query: { id: film.id }, }}>
+                <a className={styles.card}>
+                  <h2>{film.title} &rarr;</h2>
+                  <p>{film.description}</p>
+                </a>
+              </Link>
+            </div>
           )}
         </div>
       </main>
@@ -57,9 +58,9 @@ const Home: NextPage<Props> = (props) => {
   )
 }
 
-export async function getStaticProps() {
-    const { data }:FilmProps = await client.query({
-      query: gql`
+export const getStaticProps = async () => {
+  const { data }: FilmsRes = await client.query({
+    query: gql`
         query GetFilms {
           films {
             id
@@ -68,13 +69,13 @@ export async function getStaticProps() {
           }
         }
       `,
-    });
+  });
 
-    return {
-      props: {
-        films: data.films,
-      },
-   };
+  return {
+    props: {
+      films: data.films,
+    },
+  };
 }
 
 export default Home

@@ -1,12 +1,8 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
+import client from '../utils/client'
 
-export const client = new ApolloClient({
-  ssrMode: typeof window === 'undefined',
-  uri: 'https://ghibliql.herokuapp.com',
-  cache: new InMemoryCache()
-})
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
