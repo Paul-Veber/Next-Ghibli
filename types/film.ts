@@ -14,7 +14,12 @@ export interface Film  {
     director?: String
     description?: String
     release_date?: String
-    peoples?: People[]
+    people?: People[]
+}
+
+export interface Watchlist {
+    toWatch: Film[]
+    alreadyWatch: Film[] | []
 }
 
 export interface FilmProps {

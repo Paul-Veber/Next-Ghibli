@@ -13,11 +13,11 @@ const FilmInfos: NextPage<FilmProps> = (props) => {
             <h1>{film.title}</h1>
             <p>{film.description}</p>
             <p>Release date : {film.release_date}</p>
-            {film.peoples?.map((people: People) =>
-                <div key={people.id}>
-                    <h2>{people.name}</h2>
-                    <p>gender: {people.gender}</p>
-                    <p>age: {people.age}</p>
+            {film.people?.map((character: People) =>
+                <div key={character.id}>
+                    <h2>{character.name}</h2>
+                    <p>gender: {character.gender}</p>
+                    <p>age: {character.age}</p>
                 </div>
             )}
         </div>
